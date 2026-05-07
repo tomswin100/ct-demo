@@ -1,0 +1,28 @@
+From: Priya Nair <priya.nair@southernvalleyorganics.co.nz>
+To: Mark Allen <mark.allen@harbourfoods.co.nz>
+Cc: Tom Reeves <tom.reeves@southernvalleyorganics.co.nz>; Sarah McKenzie <sarah.mckenzie@harbourfoods.co.nz>
+Date: Tuesday, 7 May 2026, 4:38 PM
+Subject: Data room now open
+
+Hi Mark and Sarah,
+
+The NDA is signed, so I have opened the data room.
+
+A few notes so your team is not surprised:
+- The PantryPilot platform started as my personal side project in 2017. I then adapted it for Southern Valley once the company started trading.
+- We do not have a long-form software assignment deed. The board minutes from 2019 record that the company would use and develop the platform.
+- Two contractors in India helped build the subscription dashboard in 2021. I am looking for the contractor agreements but have not found signed copies yet.
+- We use Stripe for payments and Klaviyo for customer emails.
+- We had a billing bug in January 2026 that affected about 370 customers. All refunds were processed within a week.
+- We have not had any regulator involvement in relation to that issue.
+
+Please send any diligence questions through me rather than directly to the team. We are trying to keep this limited internally for now.
+
+Best,
+
+Priya
+
+Priya Nair
+Co-Founder & Chief Product Officer
+Southern Valley Organics Limited
+priya.nair@southernvalleyorganics.co.nz

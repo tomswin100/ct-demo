@@ -1,0 +1,35 @@
+From: Sarah McKenzie <sarah.mckenzie@harbourfoods.co.nz>
+To: James Patel <james.patel@northshorelegal.co.nz>
+Cc: Rachel Ngata <rachel.ngata@northshorelegal.co.nz>; Mark Allen <mark.allen@harbourfoods.co.nz>
+Date: Thursday, 9 May 2026, 5:52 PM
+Subject: Instructions for first legal memo
+
+Hi James,
+
+Thanks for moving quickly on this.
+
+For tomorrow's memo, please structure it as follows if possible:
+
+1. Executive summary
+2. Recommended transaction approach
+3. Key legal issues and red flags
+4. Due diligence requests
+5. Conditions for indicative offer / SPA
+6. Immediate next steps
+
+Please assume the board is not being asked to approve signing yet. The decision is only whether to authorise management to submit a non-binding indicative offer and continue diligence.
+
+My current view is that we should not recommend walking away, but we should be clear that the offer needs to be conditional. The biggest issues appear to be:
+- PantryPilot IP ownership and contractor rights;
+- GreenFields change of control consent;
+- privacy/customer data risks;
+- lease consent and renewal;
+- employment/founder retention;
+- food safety/recall history; and
+- bank/internal approvals.
+
+Please also include a short paragraph on confidentiality and communications. We do not want staff, suppliers, or customers hearing about this prematurely.
+
+Regards,
+
+Sarah

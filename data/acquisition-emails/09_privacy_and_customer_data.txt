@@ -1,0 +1,34 @@
+From: Rachel Ngata <rachel.ngata@northshorelegal.co.nz>
+To: James Patel <james.patel@northshorelegal.co.nz>
+Cc: Sarah McKenzie <sarah.mckenzie@harbourfoods.co.nz>
+Date: Wednesday, 8 May 2026, 2:15 PM
+Subject: Privacy review - Southern Valley customer platform
+
+Hi James,
+
+I have completed a first-pass privacy review from the materials provided.
+
+Key points:
+- Southern Valley holds names, addresses, phone numbers, payment tokens, dietary preferences, delivery instructions, and customer service notes.
+- Some delivery notes include sensitive details customers typed manually, e.g. "leave at back door, baby sleeping", "elderly parent at home", and health/allergy information.
+- The privacy policy is short and has not been updated since 2021.
+- It says customer information is used for "order fulfilment and marketing of related products", but it does not clearly explain data sharing in an acquisition context.
+- The January 2026 billing bug does not appear to have involved unauthorised access, but the records are thin.
+- I cannot see a formal privacy breach register or incident response plan.
+
+For the board memo, I would flag that the customer database is an asset but also a diligence focus. We should request:
+1. incident logs;
+2. complaints/refund records from the billing bug;
+3. vendor contracts with Stripe, Klaviyo, and hosting providers;
+4. data retention/deletion policy;
+5. any privacy impact assessments; and
+6. confirmation whether customer consent or updated notices are needed before post-completion data integration.
+
+Regards,
+
+Rachel
+
+Rachel Ngata
+Senior Associate
+Northshore Legal
+rachel.ngata@northshorelegal.co.nz

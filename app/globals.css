@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #f7f4ee;
+    color: #1a1816;
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+      Palatino, Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(31, 78, 121, 0.18);
+  }
+}

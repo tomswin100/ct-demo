@@ -1,0 +1,20 @@
+From: Mark Allen <mark.allen@harbourfoods.co.nz>
+To: Sarah McKenzie <sarah.mckenzie@harbourfoods.co.nz>; James Patel <james.patel@northshorelegal.co.nz>
+Date: Wednesday, 8 May 2026, 8:11 AM
+Subject: GreenFields contract - possible consent issue
+
+Morning both,
+
+I had a look at the GreenFields supply agreement in the data room last night. It looks like GreenFields supplies around 62% of Southern Valley's fresh produce by value.
+
+Clause 14 says Southern Valley must not assign, novate, transfer, or undergo a "change in control" without GreenFields' prior written consent. It also says consent must not be unreasonably withheld, but GreenFields can require evidence of financial standing and operational capacity.
+
+This seems important. If we buy the shares, there is a change in control. If we do an asset deal, we probably need assignment or novation anyway.
+
+Tom says GreenFields will be fine with Harbour Foods as owner because we are larger and more stable. That may be true, but I would rather not rely on a handshake.
+
+James, can you please include this in the memo as a key condition precedent / diligence item?
+
+Cheers,
+
+Mark
