@@ -345,7 +345,7 @@ export function WorkflowShell() {
           <div className={`flex flex-col lg:flex-row lg:items-end lg:justify-between ${isExtractionStage ? "gap-3" : "gap-5"}`}>
             <div className="max-w-3xl">
               <h1 className={`font-display tracking-tight text-brand-ink ${isExtractionStage ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"} leading-[1.1]`}>
-                Email Thread to File Note
+                Email Thread to Legal Summary
               </h1>
               <p className={`mt-3 text-brand-muted ${isExtractionStage ? "text-sm leading-6 sm:text-base" : "text-base leading-8 sm:text-lg"}`}>
                 Review the installed test thread, extract the key points, and export a partner-facing file note as PDF.
