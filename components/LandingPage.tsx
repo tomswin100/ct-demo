@@ -3,7 +3,7 @@ import Link from "next/link";
 const pillars = [
   {
     title: "Designed to convert",
-    body: "Turn dense email threads into a clean, partner-ready file note without losing the underlying structure.",
+    body: "Turn dense email threads into a clean, partner-ready legal summary without losing the underlying structure.",
   },
   {
     title: "Built to scale",
@@ -77,7 +77,7 @@ export default function LandingPage() {
             </h1>
             <p className="animate-fade-up-delay-2 mt-6 max-w-2xl text-lg leading-relaxed text-brand-muted sm:text-xl">
               Meet an interactive demo that accelerates review, automates
-              structured extraction, and gets you to a polished file note
+              structured extraction, and gets you to a polished legal summary
               faster.
             </p>
             <div className="animate-fade-up-delay-2 mt-10 flex flex-wrap items-center gap-4">
@@ -110,8 +110,8 @@ export default function LandingPage() {
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-muted">
               The same principles that power modern compliance platforms —
-              clarity, structure, and operator trust — applied to legal file
-              notes.
+              clarity, structure, and operator trust — applied to legal
+              summaries.
             </p>
             <div className="mt-14 grid gap-6 md:grid-cols-3">
               {pillars.map((item) => (

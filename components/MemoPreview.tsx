@@ -12,10 +12,10 @@ export function MemoPreview({ memoJson }: MemoPreviewProps) {
     return (
       <section className="rounded-duna-lg border border-dashed border-brand-line bg-[linear-gradient(180deg,rgba(255,253,248,0.98),rgba(243,237,229,0.98))] p-10 text-center shadow-brand-float">
         <h2 className="mt-4 font-display text-3xl tracking-tight text-brand-ink">
-          No file note yet.
+          No legal summary yet.
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-brand-muted">
-          Generate the drafted file note first.
+          Generate the drafted legal summary first.
         </p>
       </section>
     );

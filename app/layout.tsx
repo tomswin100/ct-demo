@@ -15,9 +15,9 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "CT Demo — Email to file note",
+  title: "CT Demo — Email to legal summary",
   description:
-    "Interactive legal workflow demo with file note review and PDF export",
+    "Interactive legal workflow demo with legal summary review and PDF export",
 };
 
 export default function RootLayout({

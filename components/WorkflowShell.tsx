@@ -348,7 +348,7 @@ export function WorkflowShell() {
                 Email Thread to Legal Summary
               </h1>
               <p className={`mt-3 text-brand-muted ${isExtractionStage ? "text-sm leading-6 sm:text-base" : "text-base leading-8 sm:text-lg"}`}>
-                Review the installed test thread, extract the key points, and export a partner-facing file note as PDF.
+                Review the installed test thread, extract the key points, and export a partner-facing legal summary as PDF.
               </p>
             </div>
 
