@@ -51,8 +51,8 @@ export function ExtractionPanel({ data }: ExtractionPanelProps) {
 
   return (
     <section className="space-y-3">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-stone-200 bg-stone-50/70 px-4 py-3">
-        <p className="text-sm leading-6 text-stone-600">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-duna border border-brand-line bg-brand-soft/70 px-4 py-3">
+        <p className="text-sm leading-6 text-brand-muted">
           Structured extraction from the source emails.
         </p>
         <StatusBadge
@@ -65,11 +65,11 @@ export function ExtractionPanel({ data }: ExtractionPanelProps) {
         {groups.map((group) => (
           <section
             key={group.title}
-            className="overflow-hidden rounded-[22px] border border-stone-200 bg-white shadow-[0_14px_32px_-28px_rgba(15,23,42,0.22)]"
+            className="overflow-hidden rounded-duna border border-brand-line bg-brand-surface shadow-brand-float"
           >
-            <div className="border-b border-stone-200 bg-stone-50/85 px-4 py-3">
+            <div className="border-b border-brand-line bg-brand-soft/85 px-4 py-3">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-base text-stone-950 [font-family:Georgia,Times_New_Roman,serif]">
+                <h3 className="font-display text-base tracking-tight text-brand-ink">
                   {group.title}
                 </h3>
                 <StatusBadge label={`${group.items.length}`} tone={group.tone} />
@@ -78,7 +78,7 @@ export function ExtractionPanel({ data }: ExtractionPanelProps) {
 
             <div className="max-h-[28rem] space-y-2.5 overflow-y-auto p-3">
               {group.items.length === 0 ? (
-                <p className="px-2 py-1 text-sm leading-6 text-stone-500">
+                <p className="px-2 py-1 text-sm leading-6 text-brand-muted">
                   No items in this group.
                 </p>
               ) : null}
@@ -90,30 +90,30 @@ export function ExtractionPanel({ data }: ExtractionPanelProps) {
                 return (
                   <article
                     key={itemKey}
-                    className="rounded-[16px] border border-stone-200 bg-stone-50/70 px-3 py-2.5"
+                    className="rounded-none border border-brand-line bg-brand-soft/70 px-3 py-2.5"
                   >
                     <div className="flex flex-wrap items-center gap-1.5">
                       {item.confidence ? (
                         <ConfidenceBadge confidence={item.confidence} />
                       ) : null}
-                      <span className="inline-flex items-center rounded-full border border-stone-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-600">
+                      <span className="inline-flex items-center rounded-none border border-brand-line bg-brand-bg px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-muted">
                         {item.category}
                       </span>
                       {isLegalIssue && item.severity ? (
                         <SeverityBadge severity={item.severity} />
                       ) : null}
                       {isLegalIssue && item.workstream ? (
-                        <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-700">
+                        <span className="inline-flex items-center rounded-none border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-100">
                           {item.workstream}
                         </span>
                       ) : null}
                     </div>
 
-                    <p className="mt-2 text-sm leading-6 text-stone-800">
+                    <p className="mt-2 text-sm leading-6 text-brand-ink/90">
                       {item.text}
                     </p>
 
-                    <div className="mt-2 border-t border-stone-200 pt-2 text-[11px] leading-5 text-stone-500">
+                    <div className="mt-2 border-t border-brand-line pt-2 text-[11px] leading-5 text-brand-muted">
                       {item.source}
                     </div>
                   </article>

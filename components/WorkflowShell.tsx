@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { formatEmailThread } from "../lib/acquisitionEmailThread";
@@ -18,12 +19,12 @@ type ReviewTab = "document" | "json";
 type VisibleStage = "thread" | "extraction" | "final";
 
 const shellPalette = {
-  "--workflow-bg": "247 244 238",
-  "--workflow-card": "255 252 247",
-  "--workflow-line": "220 214 205",
-  "--workflow-ink": "26 24 22",
-  "--workflow-soft": "239 234 226",
-  "--workflow-accent": "31 78 121",
+  "--workflow-bg": "246 242 235",
+  "--workflow-card": "255 253 248",
+  "--workflow-line": "221 211 198",
+  "--workflow-ink": "17 17 17",
+  "--workflow-soft": "239 231 220",
+  "--workflow-accent": "17 17 17",
 } as CSSProperties;
 
 const visibleSteps: Array<{
@@ -224,12 +225,12 @@ export function WorkflowShell() {
 
     return (
       <section className="grid gap-5 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <aside className="rounded-[28px] border border-stone-200 bg-[rgb(var(--workflow-card))] p-3 shadow-[0_18px_45px_-32px_rgba(26,24,22,0.24)]">
-          <div className="border-b border-stone-200 px-3 pb-3">
-            <p className="text-sm font-medium text-stone-800">
+        <aside className="rounded-duna-lg border border-brand-line bg-[rgb(var(--workflow-card))] p-3 shadow-brand-float">
+          <div className="border-b border-brand-line px-3 pb-3">
+            <p className="text-sm font-medium text-brand-ink">
               {emailThread.matterName}
             </p>
-            <p className="mt-1 text-sm leading-6 text-stone-600">
+            <p className="mt-1 text-sm leading-6 text-brand-muted">
               {emailThread.emails.length} source emails
             </p>
           </div>
@@ -239,7 +240,7 @@ export function WorkflowShell() {
             <select
               value={selectedEmail.id}
               onChange={(event) => setSelectedEmailId(event.target.value)}
-              className="w-full rounded-[18px] border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-900 outline-none focus:border-[rgb(var(--workflow-accent))] focus:ring-2 focus:ring-[rgb(var(--workflow-accent))]/20"
+              className="w-full rounded-duna border border-brand-line bg-[rgb(var(--workflow-soft))] px-3 py-2.5 text-sm text-brand-ink outline-none focus:border-[rgb(var(--workflow-accent))] focus:ring-2 focus:ring-[rgb(var(--workflow-accent))]/20"
             >
               {emailThread.emails.map((email, index) => (
                 <option key={email.id} value={email.id}>
@@ -250,35 +251,35 @@ export function WorkflowShell() {
           </label>
         </aside>
 
-        <article className="rounded-[30px] border border-stone-200 bg-[rgb(var(--workflow-card))] p-6 shadow-[0_20px_55px_-38px_rgba(26,24,22,0.24)] sm:p-8">
-          <div className="border-b border-stone-200 pb-5">
+        <article className="rounded-duna-xl border border-brand-line bg-[rgb(var(--workflow-card))] p-6 shadow-brand-card sm:p-8">
+          <div className="border-b border-brand-line pb-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-3xl">
-                <p className="text-sm font-medium text-stone-900">
+                <p className="text-sm font-medium text-brand-ink">
                   {selectedEmail.from}
                 </p>
-                <h2 className="mt-2 text-3xl leading-tight text-stone-950 [font-family:Georgia,Times_New_Roman,serif]">
+                <h2 className="mt-2 font-display text-3xl tracking-tight text-brand-ink">
                   {selectedEmail.subject ?? emailThread.subject}
                 </h2>
               </div>
               {selectedEmail.date ? (
-                <p className="text-sm text-stone-500">{selectedEmail.date}</p>
+                <p className="text-sm text-brand-muted">{selectedEmail.date}</p>
               ) : null}
             </div>
 
-            <dl className="mt-5 grid gap-3 text-sm leading-6 text-stone-700 sm:grid-cols-[90px_minmax(0,1fr)]">
-              <dt className="font-medium text-stone-500">To</dt>
+            <dl className="mt-5 grid gap-3 text-sm leading-6 text-brand-ink sm:grid-cols-[90px_minmax(0,1fr)]">
+              <dt className="font-medium text-brand-muted">To</dt>
               <dd>{selectedEmail.to}</dd>
               {selectedEmail.cc ? (
                 <>
-                  <dt className="font-medium text-stone-500">Cc</dt>
+                  <dt className="font-medium text-brand-muted">Cc</dt>
                   <dd>{selectedEmail.cc}</dd>
                 </>
               ) : null}
             </dl>
           </div>
 
-          <div className="mt-6 whitespace-pre-line text-sm leading-8 text-stone-800">
+          <div className="mt-6 whitespace-pre-line text-sm leading-8 text-brand-ink/90">
             {selectedEmail.body}
           </div>
         </article>
@@ -329,16 +330,24 @@ export function WorkflowShell() {
   return (
     <main
       style={shellPalette}
-      className="min-h-screen bg-[rgb(var(--workflow-bg))] px-4 py-4 text-[rgb(var(--workflow-ink))] sm:px-6 lg:px-8"
+      className="min-h-screen bg-[rgb(var(--workflow-bg))] px-4 py-4 font-sans text-[rgb(var(--workflow-ink))] sm:px-6 lg:px-8"
     >
       <div className={`mx-auto max-w-7xl ${isExtractionStage ? "space-y-4" : "space-y-6"}`}>
-        <header className={`overflow-hidden rounded-[38px] border border-stone-200 bg-[linear-gradient(140deg,rgba(255,252,247,0.98),rgba(248,244,238,0.92))] shadow-[0_24px_60px_-42px_rgba(26,24,22,0.28)] ${isExtractionStage ? "p-5 sm:p-6" : "p-7 sm:p-8"}`}>
+        <div className="flex justify-end">
+          <Link
+            href="/"
+            className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted transition hover:text-brand-ink"
+          >
+            ← Home
+          </Link>
+        </div>
+        <header className={`overflow-hidden rounded-duna-xl border border-brand-line bg-[linear-gradient(140deg,rgba(255,253,248,0.98),rgba(243,237,229,0.98))] shadow-brand-card ${isExtractionStage ? "p-5 sm:p-6" : "p-7 sm:p-8"}`}>
           <div className={`flex flex-col lg:flex-row lg:items-end lg:justify-between ${isExtractionStage ? "gap-3" : "gap-5"}`}>
             <div className="max-w-3xl">
-              <h1 className={`${isExtractionStage ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"} leading-tight text-stone-950 [font-family:Georgia,Times_New_Roman,serif]`}>
+              <h1 className={`font-display tracking-tight text-brand-ink ${isExtractionStage ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"} leading-[1.1]`}>
                 Email Thread to File Note
               </h1>
-              <p className={`mt-3 text-stone-600 ${isExtractionStage ? "text-sm leading-6 sm:text-base" : "text-base leading-8 sm:text-lg"}`}>
+              <p className={`mt-3 text-brand-muted ${isExtractionStage ? "text-sm leading-6 sm:text-base" : "text-base leading-8 sm:text-lg"}`}>
                 Review the installed test thread, extract the key points, and export a partner-facing file note as PDF.
               </p>
             </div>
@@ -358,22 +367,22 @@ export function WorkflowShell() {
               return (
                 <div
                   key={step.id}
-                  className={`rounded-[20px] border text-left ${isExtractionStage ? "p-3" : "p-4"} ${
+                  className={`rounded-duna border border-brand-line text-left ${isExtractionStage ? "p-3" : "p-4"} ${
                     isActive
-                      ? "border-[rgb(var(--workflow-accent))] bg-white shadow-[0_16px_30px_-24px_rgba(31,78,121,0.6)]"
+                      ? "border-[rgb(var(--workflow-accent))] bg-white shadow-[0_16px_30px_-24px_rgba(17,17,17,0.18)]"
                       : isComplete
-                        ? "border-emerald-200 bg-emerald-50/70"
-                        : "border-stone-200 bg-stone-50/80"
+                        ? "border-emerald-500/30 bg-emerald-500/10"
+                        : "border-brand-line bg-brand-soft/80"
                   }`}
                 >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-muted">
                     Step {index + 1}
                   </p>
-                  <p className="mt-1.5 text-sm font-medium text-stone-900">
+                  <p className="mt-1.5 text-sm font-medium text-brand-ink">
                     {step.label}
                   </p>
                   {!isExtractionStage ? (
-                    <p className="mt-2 text-sm leading-6 text-stone-600">
+                    <p className="mt-2 text-sm leading-6 text-brand-muted">
                       {step.description}
                     </p>
                   ) : null}
@@ -383,23 +392,23 @@ export function WorkflowShell() {
           </div>
         </header>
 
-        <section className={`rounded-[28px] border border-stone-200 bg-[rgb(var(--workflow-card))] shadow-[0_18px_45px_-34px_rgba(26,24,22,0.22)] ${isExtractionStage ? "p-3 sm:p-4" : "p-4 sm:p-5"}`}>
+        <section className={`rounded-duna-lg border border-brand-line bg-[rgb(var(--workflow-card))] shadow-brand-float ${isExtractionStage ? "p-3 sm:p-4" : "p-4 sm:p-5"}`}>
           <div className="space-y-4">
-            <p className={`text-stone-600 ${isExtractionStage ? "text-sm leading-6" : "text-sm leading-7"}`}>
+            <p className={`text-brand-muted ${isExtractionStage ? "text-sm leading-6" : "text-sm leading-7"}`}>
               Switch between installed threads, extract the working points, then edit, inspect, and export the final document from one page.
             </p>
 
-            <div className={`flex items-center gap-2 rounded-[22px] border border-stone-200 bg-stone-50/80 ${isExtractionStage ? "p-3" : "p-4"}`}>
+            <div className={`flex items-center gap-2 rounded-duna border border-brand-line bg-brand-soft/80 ${isExtractionStage ? "p-3" : "p-4"}`}>
               <StatusBadge label="LLM-powered extraction" tone="blue" />
-              <p className="text-sm leading-6 text-stone-600">
+              <p className="text-sm leading-6 text-brand-muted">
                 The extraction step uses structured model output to keep the JSON consistent.
               </p>
             </div>
 
             {emailThread ? (
-              <div className="flex flex-col gap-3 border-t border-stone-200 pt-4">
+              <div className="flex flex-col gap-3 border-t border-brand-line pt-4">
                 <label className="grid gap-2 sm:max-w-md">
-                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">
                     Example threads
                   </span>
                   <select
@@ -408,7 +417,7 @@ export function WorkflowShell() {
                       handleLoadInstalledThread(event.target.value)
                     }
                     disabled={extractionPending}
-                    className="w-full rounded-[18px] border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-900 outline-none focus:border-[rgb(var(--workflow-accent))] focus:ring-2 focus:ring-[rgb(var(--workflow-accent))]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-duna border border-brand-line bg-[rgb(var(--workflow-soft))] px-3 py-2.5 text-sm text-brand-ink outline-none focus:border-[rgb(var(--workflow-accent))] focus:ring-2 focus:ring-[rgb(var(--workflow-accent))]/20 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {installedThreadOptions.map((option) => (
                       <option key={option.id} value={option.id}>
@@ -418,17 +427,17 @@ export function WorkflowShell() {
                   </select>
                 </label>
                 {selectedThreadOption ? (
-                  <p className="text-sm leading-6 text-stone-600">
+                  <p className="text-sm leading-6 text-brand-muted">
                     Selected matter: {selectedThreadOption.matterName}
                   </p>
                 ) : null}
                 {visibleStage === "thread" && extractionError ? (
-                  <p className="text-sm leading-6 text-red-700">
+                  <p className="text-sm leading-6 text-red-300">
                     {extractionError}
                   </p>
                 ) : null}
                 {visibleStage === "extraction" && memoStructureError ? (
-                  <p className="text-sm leading-6 text-red-700">
+                  <p className="text-sm leading-6 text-red-300">
                     {memoStructureError}
                   </p>
                 ) : null}
@@ -439,7 +448,7 @@ export function WorkflowShell() {
                         type="button"
                         onClick={handleRunExtraction}
                         disabled={extractionPending}
-                        className="rounded-[18px] bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(31,78,121,0.75)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-duna bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(17,17,17,0.28)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {extractionPending
                           ? "Running extraction…"
@@ -449,7 +458,7 @@ export function WorkflowShell() {
                         type="button"
                         onClick={handleGenerateThread}
                         disabled={extractionPending}
-                        className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-duna border border-brand-line bg-[rgb(var(--workflow-soft))] px-5 py-2.5 text-sm font-medium text-brand-ink transition hover:border-brand-muted/50 hover:bg-[rgb(var(--workflow-card))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         Reload selected thread
                       </button>
@@ -460,14 +469,14 @@ export function WorkflowShell() {
                         type="button"
                         onClick={handleStructureMemo}
                         disabled={!extractedData}
-                        className="rounded-[18px] bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(31,78,121,0.75)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-duna bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(17,17,17,0.28)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         Structure memo
                       </button>
                       <button
                         type="button"
                         onClick={handleGenerateThread}
-                        className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
+                        className="rounded-duna border border-brand-line bg-[rgb(var(--workflow-soft))] px-5 py-2.5 text-sm font-medium text-brand-ink transition hover:border-brand-muted/50 hover:bg-[rgb(var(--workflow-card))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
                       >
                         Start over with selected thread
                       </button>
@@ -476,7 +485,7 @@ export function WorkflowShell() {
                     <button
                       type="button"
                       onClick={handleGenerateThread}
-                      className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
+                      className="rounded-duna border border-brand-line bg-[rgb(var(--workflow-soft))] px-5 py-2.5 text-sm font-medium text-brand-ink transition hover:border-brand-muted/50 hover:bg-[rgb(var(--workflow-card))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
                     >
                       Reload selected thread
                     </button>
@@ -495,11 +504,11 @@ export function WorkflowShell() {
 
 function EmptyState({ title, body }: { title: string; body: string }) {
   return (
-    <section className="rounded-[28px] border border-dashed border-stone-300 bg-[rgb(var(--workflow-card))] p-10 text-center shadow-[0_16px_36px_-30px_rgba(26,24,22,0.2)]">
-      <h3 className="text-2xl text-stone-900 [font-family:Georgia,Times_New_Roman,serif]">
+    <section className="rounded-duna-lg border border-dashed border-brand-line bg-[rgb(var(--workflow-card))] p-10 text-center shadow-brand-float">
+      <h3 className="font-display text-2xl tracking-tight text-brand-ink">
         {title}
       </h3>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-stone-600">
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-brand-muted">
         {body}
       </p>
     </section>

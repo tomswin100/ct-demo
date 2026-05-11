@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
+import { Manrope, Outfit } from "next/font/google";
 import "./globals.css";
 
+const display = Outfit({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const sans = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "CT Demo — Email Thread to File Note",
-  description: "Interactive legal workflow demo with file note review and PDF export",
+  title: "CT Demo — Email to file note",
+  description:
+    "Interactive legal workflow demo with file note review and PDF export",
 };
 
 export default function RootLayout({
@@ -13,7 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen antialiased">{children}</body>
+      <body
+        className={`${display.variable} ${sans.variable} min-h-screen font-sans antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

@@ -8,15 +8,58 @@
   }
 
   body {
-    background: #f7f4ee;
-    color: #1a1816;
-    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
-      Palatino, Georgia, serif;
+    background: #f6f2eb;
+    color: #111111;
+    font-family: var(--font-sans), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: rgba(31, 78, 121, 0.18);
+    background: rgba(17, 17, 17, 0.14);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .hero-mesh {
+    background:
+      radial-gradient(
+        ellipse 120% 80% at 10% -20%,
+        rgba(17, 17, 17, 0.06),
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse 90% 60% at 90% 0%,
+        rgba(172, 149, 118, 0.12),
+        transparent 45%
+      ),
+      linear-gradient(180deg, #faf6f0 0%, #f3ede5 100%);
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.7s ease-out both;
+  }
+
+  .animate-fade-up-delay {
+    animation: fade-up 0.75s ease-out 0.12s both;
+  }
+
+  .animate-fade-up-delay-2 {
+    animation: fade-up 0.75s ease-out 0.22s both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -114,7 +114,7 @@ function DocumentFieldLabel({
       className={
         hidden
           ? "sr-only"
-          : "mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500"
+          : "mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-muted"
       }
     >
       {label}
@@ -140,7 +140,7 @@ function DocumentInput({
         type="text"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-[14px] border border-transparent bg-slate-50/80 px-3 py-2.5 text-sm leading-7 text-slate-900 outline-none transition placeholder:text-slate-300 focus:border-blue-200 focus:bg-white focus:ring-4 focus:ring-blue-100"
+        className="w-full rounded-none border border-transparent bg-brand-soft/90 px-3 py-2.5 text-sm leading-7 text-brand-ink outline-none transition placeholder:text-brand-muted/50 focus:border-brand-accent/50 focus:bg-brand-surface focus:ring-4 focus:ring-brand-accent/15"
       />
     </label>
   );
@@ -166,7 +166,7 @@ function DocumentTextarea({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         rows={rows}
-        className="w-full rounded-[18px] border border-transparent bg-slate-50/80 px-4 py-3 text-sm leading-7 text-slate-800 outline-none transition placeholder:text-slate-300 focus:border-blue-200 focus:bg-white focus:ring-4 focus:ring-blue-100"
+        className="w-full rounded-duna border border-transparent bg-brand-soft/90 px-4 py-3 text-sm leading-7 text-brand-ink/95 outline-none transition placeholder:text-brand-muted/50 focus:border-brand-accent/50 focus:bg-brand-surface focus:ring-4 focus:ring-brand-accent/15"
       />
     </label>
   );
@@ -192,8 +192,8 @@ export function PdfFormPreview({
 
   if (!memoJson) {
     return (
-      <section className="rounded-[28px] border border-dashed border-slate-300 bg-white p-10 text-center shadow-[0_20px_45px_-34px_rgba(15,23,42,0.2)]">
-        <p className="mt-4 text-sm leading-7 text-slate-600">
+      <section className="rounded-duna-lg border border-dashed border-brand-line bg-brand-surface p-10 text-center shadow-brand-float">
+        <p className="mt-4 text-sm leading-7 text-brand-muted">
           Generate the final document first.
         </p>
       </section>
@@ -202,8 +202,8 @@ export function PdfFormPreview({
 
   if (!editorDraft) {
     return (
-      <section className="rounded-[28px] border border-dashed border-slate-300 bg-white p-10 text-center shadow-[0_20px_45px_-34px_rgba(15,23,42,0.2)]">
-        <p className="mt-4 text-sm leading-7 text-slate-600">
+      <section className="rounded-duna-lg border border-dashed border-brand-line bg-brand-surface p-10 text-center shadow-brand-float">
+        <p className="mt-4 text-sm leading-7 text-brand-muted">
           Preparing the final document...
         </p>
       </section>
@@ -241,27 +241,27 @@ export function PdfFormPreview({
 
   return (
     <section className="space-y-5">
-      <div className="rounded-[30px] border border-slate-200 bg-[linear-gradient(180deg,rgba(248,250,252,0.96),rgba(241,245,249,0.86))] p-4 shadow-[0_24px_60px_-38px_rgba(15,23,42,0.28)] sm:p-6">
-        <div className="rounded-[26px] border border-slate-300/80 bg-white p-6 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.2)] sm:p-8">
-          <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className="rounded-duna-xl border border-brand-line bg-[linear-gradient(180deg,rgba(255,253,248,0.98),rgba(243,237,229,0.98))] p-4 shadow-brand-card sm:p-6">
+        <div className="rounded-duna-xl border border-brand-line bg-brand-surface p-6 shadow-brand-float sm:p-8">
+          <div className="flex flex-col gap-4 border-b border-brand-line pb-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h2 className="mt-3 text-3xl text-slate-950 [font-family:Georgia,Times_New_Roman,serif] sm:text-[2.1rem]">
+              <h2 className="mt-3 font-display text-3xl tracking-tight text-brand-ink sm:text-[2.1rem]">
                 Final document
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-600">
+              <p className="mt-2 max-w-2xl text-sm leading-7 text-brand-muted">
                 Edit the document and inspect the JSON source of truth on this page.
               </p>
             </div>
 
             <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <label className="flex flex-col gap-1 text-sm text-slate-600">
+              <label className="flex flex-col gap-1 text-sm text-brand-muted">
                 <span className="sr-only">View</span>
                 <select
                   value={reviewTab}
                   onChange={(event) =>
                     onReviewTabChange?.(event.target.value as ReviewTab)
                   }
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none focus:border-blue-200 focus:ring-4 focus:ring-blue-100"
+                  className="rounded-none border border-brand-line bg-brand-soft px-4 py-2.5 text-sm font-medium text-brand-ink outline-none focus:border-brand-accent/50 focus:ring-4 focus:ring-brand-accent/15"
                 >
                   <option value="document">Document</option>
                   <option value="json">JSON</option>
@@ -272,14 +272,14 @@ export function PdfFormPreview({
                 <button
                   type="button"
                   onClick={handlePrintMemo}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition hover:bg-slate-50 focus-visible:border-blue-200 focus-visible:ring-4 focus-visible:ring-blue-100"
+                  className="rounded-none border border-brand-line bg-brand-soft px-4 py-2.5 text-sm font-medium text-brand-ink outline-none transition hover:bg-brand-surface focus-visible:border-brand-accent/50 focus-visible:ring-4 focus-visible:ring-brand-accent/15"
                 >
                   Print
                 </button>
                 <button
                   type="button"
                   onClick={handleDownloadPdf}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition hover:bg-slate-50 focus-visible:border-blue-200 focus-visible:ring-4 focus-visible:ring-blue-100"
+                  className="rounded-none border border-brand-line bg-brand-soft px-4 py-2.5 text-sm font-medium text-brand-ink outline-none transition hover:bg-brand-surface focus-visible:border-brand-accent/50 focus-visible:ring-4 focus-visible:ring-brand-accent/15"
                 >
                   Download
                 </button>
@@ -294,26 +294,26 @@ export function PdfFormPreview({
 
           {reviewTab === "json" ? (
             <div className="mt-6 space-y-4">
-              <div className="rounded-[20px] border border-slate-200 bg-slate-50/80 px-4 py-4 text-sm leading-7 text-slate-600">
+              <div className="rounded-none border border-brand-line bg-brand-soft/80 px-4 py-4 text-sm leading-7 text-brand-muted">
                 The JSON below reflects the current draft, including any inline edits you have made on the document tab.
               </div>
               <JsonSchemaViewer value={resolvedMemo} />
             </div>
           ) : (
-            <article className="mt-6 min-h-[980px] rounded-[22px] border border-slate-300 bg-white px-6 py-7 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.75)] sm:px-8">
-              <div className="border-b border-stone-300 pb-5">
+            <article className="mt-6 min-h-[980px] rounded-duna border border-brand-line bg-[linear-gradient(180deg,rgba(255,253,248,0.98),rgba(248,243,235,0.98))] px-6 py-7 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.7)] sm:px-8">
+              <div className="border-b border-brand-line pb-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-500">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-brand-muted">
                     {viewModel.title}
                   </p>
-                  <p className="text-xs leading-6 text-slate-500">
+                  <p className="text-xs leading-6 text-brand-muted">
                     Inline edits are shown in the JSON view when you switch views.
                   </p>
                 </div>
 
-                <dl className="mt-5 grid gap-x-8 gap-y-4 border-y border-stone-200 py-5 sm:grid-cols-[150px_minmax(0,1fr)]">
+                <dl className="mt-5 grid gap-x-8 gap-y-4 border-y border-brand-line py-5 sm:grid-cols-[150px_minmax(0,1fr)]">
                   <div className="contents">
-                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">
                       To
                     </dt>
                     <dd>
@@ -331,7 +331,7 @@ export function PdfFormPreview({
                     </dd>
                   </div>
                   <div className="contents">
-                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">
                       From
                     </dt>
                     <dd>
@@ -349,7 +349,7 @@ export function PdfFormPreview({
                     </dd>
                   </div>
                   <div className="contents">
-                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">
                       Subject
                     </dt>
                     <dd>
@@ -367,7 +367,7 @@ export function PdfFormPreview({
                     </dd>
                   </div>
                   <div className="contents">
-                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <dt className="pt-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">
                       Date
                     </dt>
                     <dd>
@@ -389,7 +389,7 @@ export function PdfFormPreview({
 
               <div className="mt-8 space-y-8">
                 <section className="space-y-4">
-                  <h3 className="text-[1.35rem] text-slate-950 [font-family:Georgia,Times_New_Roman,serif]">
+                  <h3 className="font-display text-[1.35rem] tracking-tight text-brand-ink">
                     Background
                   </h3>
                   <DocumentTextarea
@@ -407,14 +407,14 @@ export function PdfFormPreview({
                 </section>
 
                 <section className="space-y-4">
-                  <h3 className="text-[1.35rem] text-slate-950 [font-family:Georgia,Times_New_Roman,serif]">
+                  <h3 className="font-display text-[1.35rem] tracking-tight text-brand-ink">
                     Key issues
                   </h3>
                   <div className="space-y-4">
                     {editorDraft.sections.map((section, index) => (
                       <div
                         key={`${section.heading}-${index}`}
-                        className="rounded-[18px] border border-stone-200/80 bg-stone-50/70 px-4 py-4"
+                        className="rounded-duna border border-brand-line/90 bg-brand-soft/70 px-4 py-4"
                       >
                         <DocumentInput
                           label={`Section ${index + 1} heading`}
@@ -461,7 +461,7 @@ export function PdfFormPreview({
                 </section>
 
                 <section className="space-y-4">
-                  <h3 className="text-[1.15rem] text-slate-950 [font-family:Georgia,Times_New_Roman,serif]">
+                  <h3 className="font-display text-[1.15rem] tracking-tight text-brand-ink">
                     Recommended actions
                   </h3>
                   <DocumentTextarea
@@ -479,7 +479,7 @@ export function PdfFormPreview({
                 </section>
 
                 <section className="space-y-4">
-                  <h3 className="text-[1.15rem] text-slate-950 [font-family:Georgia,Times_New_Roman,serif]">
+                  <h3 className="font-display text-[1.15rem] tracking-tight text-brand-ink">
                     Client questions
                   </h3>
                   <DocumentTextarea
@@ -497,7 +497,7 @@ export function PdfFormPreview({
                 </section>
 
                 <section className="space-y-4">
-                  <h3 className="text-[1.15rem] text-slate-950 [font-family:Georgia,Times_New_Roman,serif]">
+                  <h3 className="font-display text-[1.15rem] tracking-tight text-brand-ink">
                     Review note
                   </h3>
                   <DocumentTextarea
@@ -515,7 +515,7 @@ export function PdfFormPreview({
                 </section>
               </div>
 
-              <footer className="mt-10 border-t border-stone-300 pt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+              <footer className="mt-10 border-t border-brand-line pt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-muted">
                 {viewModel.footerLabel}
               </footer>
             </article>

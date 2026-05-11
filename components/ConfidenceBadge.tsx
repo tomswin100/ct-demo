@@ -13,7 +13,7 @@ const toneClasses: Record<ConfidenceLevel, string> = {
 export function ConfidenceBadge({ confidence }: ConfidenceBadgeProps) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${toneClasses[confidence]}`}
+      className={`inline-flex items-center rounded-none border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${toneClasses[confidence]}`}
     >
       {confidence}
     </span>

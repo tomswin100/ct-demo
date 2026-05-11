@@ -8,14 +8,14 @@ type WorkflowDiagramProps = {
 
 export function WorkflowDiagram({ steps }: WorkflowDiagramProps) {
   return (
-    <section className="rounded-[30px] border border-blue-100 bg-white/90 p-5 shadow-[0_24px_60px_-36px_rgba(37,99,235,0.45)] backdrop-blur">
+    <section className="rounded-duna-xl border border-brand-line bg-brand-surface/95 p-5 shadow-brand-float backdrop-blur">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         {steps.map((step, index) => {
           const stateClasses = step.active
-            ? "border-blue-300 bg-blue-50 text-blue-900"
+            ? "border-emerald-500/40 bg-emerald-500/12 text-emerald-50"
             : step.complete
-              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-              : "border-slate-200 bg-slate-50 text-slate-600";
+              ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-100"
+              : "border-brand-line bg-brand-soft text-brand-muted";
 
           return (
             <div
@@ -23,7 +23,7 @@ export function WorkflowDiagram({ steps }: WorkflowDiagramProps) {
               className="flex min-w-0 flex-1 items-center gap-3"
             >
               <div
-                className={`flex min-h-[76px] flex-1 items-center rounded-[24px] border px-4 py-3 transition-colors ${stateClasses}`}
+                className={`flex min-h-[76px] flex-1 items-center rounded-duna border px-4 py-3 transition-colors ${stateClasses}`}
               >
                 <div className="space-y-1">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em]">
@@ -33,7 +33,7 @@ export function WorkflowDiagram({ steps }: WorkflowDiagramProps) {
                 </div>
               </div>
               {index < steps.length - 1 ? (
-                <div className="hidden text-slate-300 lg:block">-&gt;</div>
+                <div className="hidden text-brand-line lg:block">-&gt;</div>
               ) : null}
             </div>
           );

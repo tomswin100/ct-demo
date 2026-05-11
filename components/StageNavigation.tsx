@@ -24,12 +24,12 @@ export function StageNavigation({
   onSelect,
 }: StageNavigationProps) {
   return (
-    <aside className="rounded-[28px] border border-slate-200/80 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.3)]">
+    <aside className="rounded-duna-lg border border-brand-line/90 bg-brand-surface p-4 shadow-brand-float">
       <div className="px-2 pb-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-muted">
           Workflow navigation
         </p>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
+        <p className="mt-2 text-sm leading-6 text-brand-muted">
           Each stage stays separate so the reviewer can see where source
           material ends and presentation layers begin.
         </p>
@@ -46,30 +46,30 @@ export function StageNavigation({
               type="button"
               onClick={() => onSelect(stage.id)}
               disabled={!status.available && !isCurrent}
-              className={`w-full rounded-[22px] border p-4 text-left transition ${
+              className={`w-full rounded-duna border p-4 text-left transition ${
                 isCurrent
-                  ? "border-blue-300 bg-blue-50 shadow-[0_18px_35px_-24px_rgba(37,99,235,0.6)]"
-                  : "border-slate-200 bg-slate-50/80 hover:border-slate-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-75"
+                  ? "border-emerald-500/40 bg-emerald-500/10 shadow-[0_18px_35px_-24px_rgba(62,152,126,0.35)]"
+                  : "border-brand-line bg-brand-soft/80 hover:border-brand-muted/40 hover:bg-brand-surface disabled:cursor-not-allowed disabled:opacity-75"
               }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-muted">
                     Step {stage.stepNumber}
                   </p>
-                  <p className="mt-2 text-sm font-medium leading-6 text-slate-900">
+                  <p className="mt-2 text-sm font-medium leading-6 text-brand-ink">
                     {stage.navTitle}
                   </p>
                 </div>
                 <StatusBadge label={status.label} tone={status.tone} />
               </div>
 
-              <p className="mt-3 text-sm leading-6 text-slate-600">
+              <p className="mt-3 text-sm leading-6 text-brand-muted">
                 {stage.explanation}
               </p>
 
               {!status.available ? (
-                <p className="mt-3 text-xs font-medium uppercase tracking-[0.16em] text-amber-700">
+                <p className="mt-3 text-xs font-medium uppercase tracking-[0.16em] text-amber-300">
                   Locked until earlier stage is prepared
                 </p>
               ) : null}

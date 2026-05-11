@@ -20,49 +20,52 @@ export function StageExplainer({
   statusTone,
 }: StageExplainerProps) {
   return (
-    <section className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.35)]">
+    <section className="rounded-duna-lg border border-brand-line/80 bg-brand-surface p-6 shadow-brand-card">
       <div className="grid gap-6 lg:grid-cols-[1.35fr_0.95fr]">
         <div className="space-y-4">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-accent-muted">
                 Stage boundary
               </p>
               <StatusBadge label={statusLabel} tone={statusTone} />
             </div>
-            <h2 className="mt-2 text-2xl text-slate-900 [font-family:Georgia,Times_New_Roman,serif]">
+            <h2 className="mt-2 font-display text-2xl tracking-tight text-brand-ink">
               {title}
             </h2>
           </div>
-          <p className="max-w-3xl text-sm leading-7 text-slate-600">
+          <p className="max-w-3xl text-sm leading-7 text-brand-muted">
             {explanation}
           </p>
         </div>
 
-        <div className="grid gap-4 rounded-[24px] border border-slate-200 bg-slate-50/80 p-5">
+        <div className="grid gap-4 rounded-duna-lg border border-brand-line bg-brand-soft/80 p-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">
               Input
             </p>
-            <p className="mt-2 text-sm leading-6 text-slate-700">{inputLabel}</p>
+            <p className="mt-2 text-sm leading-6 text-brand-ink/90">{inputLabel}</p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">
               Output
             </p>
-            <p className="mt-2 text-sm leading-6 text-slate-700">
+            <p className="mt-2 text-sm leading-6 text-brand-ink/90">
               {outputLabel}
             </p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-muted">
               This stage does not do
             </p>
-            <ul className="mt-2 space-y-2 text-sm leading-6 text-slate-700">
+            <ul className="mt-2 space-y-2 text-sm leading-6 text-brand-ink/90">
               {doesNotDo.map((item) => (
-                <li key={item} className="rounded-2xl bg-white px-3 py-2">
+                <li
+                  key={item}
+                  className="rounded-none border border-brand-line bg-brand-bg px-3 py-2"
+                >
                   {item}
                 </li>
               ))}
