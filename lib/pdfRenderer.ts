@@ -601,25 +601,59 @@ export function createPrintableMemoHtml(memoJson: MemoJson): string {
 }
 
 export function openMemoPrintPreview(memoJson: MemoJson): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  const printWindow = window.open("", "_blank", "noopener,noreferrer");
-
-  if (!printWindow) {
+  if (typeof window === "undefined" || typeof document === "undefined") {
     return false;
   }
 
   const html = createPrintableMemoHtml(memoJson);
+  const iframe = document.createElement("iframe");
 
-  printWindow.document.open();
-  printWindow.document.write(html);
-  printWindow.document.close();
-  printWindow.focus();
+  iframe.setAttribute("title", "Print preview");
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.style.cssText =
+    "position:fixed;left:0;top:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none";
+
+  document.body.appendChild(iframe);
+
+  const win = iframe.contentWindow;
+  const doc = iframe.contentDocument;
+
+  if (!win || !doc) {
+    iframe.remove();
+    return false;
+  }
+
+  doc.open();
+  doc.write(html);
+  doc.close();
+
+  const cleanup = () => {
+    if (iframe.isConnected) {
+      iframe.remove();
+    }
+  };
+
+  const timeoutFallback = window.setTimeout(cleanup, 120_000);
+
+  win.addEventListener(
+    "afterprint",
+    () => {
+      window.clearTimeout(timeoutFallback);
+      cleanup();
+    },
+    { once: true },
+  );
+
   window.setTimeout(() => {
-    printWindow.print();
-  }, 250);
+    try {
+      win.focus();
+      win.print();
+    } catch (error) {
+      window.clearTimeout(timeoutFallback);
+      cleanup();
+      console.error("Print failed.", error);
+    }
+  }, 300);
 
   return true;
 }

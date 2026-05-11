@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { ExtractedWorkflowData, MemoJson } from "./workflowTypes";
+import type { EmailThread, ExtractedWorkflowData, MemoJson } from "./workflowTypes";
 
 const REVIEW_NOTE =
   "This memo is a workflow-generated first draft based on email correspondence only. It is not legal advice. A lawyer must verify the extracted facts, review the underlying documents and approve any analysis before the memo is relied on.";
@@ -150,8 +150,73 @@ function mapFactTexts(
   return items.map((item) => item.text);
 }
 
-export function createMemoJson(extractedData: ExtractedWorkflowData): MemoJson {
+function buildDealSummary(emailThread?: EmailThread) {
+  if (!emailThread) {
+    return {
+      subject:
+        "Harbour Foods Group Limited — Proposed acquisition of Southern Valley Organics Limited",
+      fileNumber: "DEMO-2026-SVO",
+      memoDate: "2026-05-10",
+      sourceMaterial: "Generated transaction email thread",
+      backgroundFallback:
+        "The client is assessing a proposed transaction; confirm all extracted facts against the source emails.",
+      matterField:
+        "Harbour Foods Group Limited / Southern Valley Organics Limited",
+      clientQuestion:
+        "Which third-party consents, financing approvals and diligence items must be resolved before the proposed transaction can proceed?",
+    };
+  }
+
+  if (emailThread.matterCategory === "general" || !emailThread.transactionType) {
+    return {
+      subject:
+        emailThread.subject || `${emailThread.matterName} — Initial file note`,
+      fileNumber: emailThread.fileNumber ?? "DEMO-2026-GENERAL",
+      memoDate: emailThread.memoDate ?? "2026-05-10",
+      sourceMaterial: "Installed email thread",
+      backgroundFallback: `${emailThread.matterName}; confirm all extracted facts against the source emails.`,
+      matterField: emailThread.matterName,
+      clientQuestion:
+        "What factual gaps, missing documents and practical response options should be highlighted before replying on the issue raised in the thread?",
+    };
+  }
+
+  const relationshipLabel =
+    emailThread.transactionType === "acquisition"
+      ? `Proposed acquisition of ${emailThread.counterpartyName}`
+      : `Proposed merger with ${emailThread.counterpartyName}`;
+  const backgroundFallback =
+    emailThread.transactionType === "acquisition"
+      ? `${emailThread.clientName} is assessing the proposed acquisition of ${emailThread.counterpartyName}; confirm all extracted facts against the source emails.`
+      : `${emailThread.clientName} is assessing a proposed merger with ${emailThread.counterpartyName}; confirm all extracted facts against the source emails.`;
+  const matterField =
+    emailThread.transactionType === "acquisition"
+      ? `${emailThread.clientName} / ${emailThread.counterpartyName}`
+      : `${emailThread.clientName} + ${emailThread.counterpartyName}`;
+  const clientQuestion =
+    emailThread.transactionType === "acquisition"
+      ? "Which third-party consents, financing approvals and diligence items must be resolved before signing or completing the proposed acquisition?"
+      : "Which third-party consents, financing approvals and integration conditions must be resolved before signing or implementing the proposed merger?";
+
+  return {
+    subject: `${emailThread.clientName} — ${relationshipLabel}`,
+    fileNumber: emailThread.fileNumber,
+    memoDate: emailThread.memoDate,
+    sourceMaterial: "Generated transaction email thread",
+    backgroundFallback,
+    matterField,
+    clientQuestion,
+  };
+}
+
+export function createMemoJson(
+  extractedData: ExtractedWorkflowData,
+  emailThread?: EmailThread,
+): MemoJson {
   const validatedData = ExtractedWorkflowDataSchema.parse(extractedData);
+  const dealSummary = buildDealSummary(emailThread);
+  const isGeneralThread =
+    emailThread?.matterCategory === "general" || !emailThread?.transactionType;
 
   const deadlineText = getTextByCategory(
     validatedData.timeConstraints,
@@ -161,7 +226,7 @@ export function createMemoJson(extractedData: ExtractedWorkflowData): MemoJson {
 
   const background = mapFactTexts(
     validatedData.keyFacts.slice(0, 4),
-    "Harbour Foods Group Limited is assessing the proposed acquisition of Southern Valley Organics Limited; confirm all extracted facts against the source emails.",
+    dealSummary.backgroundFallback,
   );
 
   const extraFacts = mapFactTexts(
@@ -184,17 +249,42 @@ export function createMemoJson(extractedData: ExtractedWorkflowData): MemoJson {
     "No explicit deadlines were extracted; confirm timing with the client team.",
   );
 
+  const clientQuestions = isGeneralThread
+    ? [
+        "What seems to have happened on the facts currently available in the emails?",
+        "Which missing documents or confirmations matter most before responding?",
+        dealSummary.clientQuestion,
+      ]
+    : [
+        "Does the preferred structure allocate risk appropriately given the consent, property and historic liability issues raised in the emails?",
+        dealSummary.clientQuestion,
+        "What diligence best tests the privacy, regulatory, IP and management-retention points raised in the thread?",
+      ];
+
+  const recommendedNextSteps = isGeneralThread
+    ? [
+        "Confirm the signed booking form, final agreed terms, and any written approval trail for extra staffing or event changes.",
+        "Pull together the venue policy, revised invoice, run sheet, and any call notes or follow-up emails about guest numbers and the upstairs bar.",
+        "Frame the response around what was and was not clearly approved before the event, while reserving position until the missing documents are checked.",
+        "Keep the partner reply practical and tied to the timing request raised in the emails.",
+      ]
+    : [
+        "Confirm the key customer or supplier consent position and any other assignment or change-of-control restrictions against executed agreements.",
+        "Request privacy notices, incident logs, vendor agreements and data-integration planning inputs from the counterparty advisers.",
+        "Line up property consent requirements, lease mechanics and any unapproved works reviews for operational sites.",
+        "Align board paper content with the CFO timing and ensure any offer language matches approvals and financing constraints.",
+      ];
+
   const memoJson = {
     memo_metadata: {
       document_type: "Internal Memorandum",
       to: "Partner",
       from: "Junior Lawyer",
-      subject:
-        "Harbour Foods Group Limited — Proposed acquisition of Southern Valley Organics Limited",
-      file_number: "DEMO-2026-SVO",
-      date: "2026-05-10",
+      subject: dealSummary.subject,
+      file_number: dealSummary.fileNumber,
+      date: dealSummary.memoDate,
       status: "Draft — lawyer review required",
-      source_material: "Acquisition email example set (.txt thread)",
+      source_material: dealSummary.sourceMaterial,
     },
     workflow_stage: {
       current_stage: "json-schema",
@@ -227,17 +317,8 @@ export function createMemoJson(extractedData: ExtractedWorkflowData): MemoJson {
           points: timePoints,
         },
       ],
-      client_questions: [
-        "Is a share purchase or asset purchase more appropriate given supplier consent, lease assignment and historic liability issues?",
-        "What bank consents are required before any binding acquisition documentation or draw on facilities?",
-        "What diligence confirms ownership of PantryPilot, privacy compliance, and food regulatory exposure?",
-      ],
-      recommended_next_steps: [
-        "Confirm GreenFields change-of-control consent and any other supplier or customer assignment restrictions against executed agreements.",
-        "Request privacy incident logs, vendor DPAs, and data integration planning inputs from the target advisers.",
-        "Line up property landlord consent, lease renewal mechanics, and any unapproved works reviews.",
-        "Align board paper content with CFO timing and ensure non-binding offer language matches approvals and financing constraints.",
-      ],
+      client_questions: clientQuestions,
+      recommended_next_steps: recommendedNextSteps,
       review_note: REVIEW_NOTE,
     },
     pdf_form: {
@@ -246,7 +327,7 @@ export function createMemoJson(extractedData: ExtractedWorkflowData): MemoJson {
       fields: [
         {
           label: "Matter",
-          value: "Harbour Foods Group Limited / Southern Valley Organics Limited",
+          value: dealSummary.matterField,
         },
         {
           label: "Workflow Stage",

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import {
   createPdfMemoViewModel,
+  downloadMemoPdf,
+  openMemoPrintPreview,
 } from "../lib/pdfRenderer";
 import type { MemoJson, MemoSection } from "../lib/workflowTypes";
 import { JsonSchemaViewer } from "./JsonSchemaViewer";
@@ -211,6 +213,22 @@ export function PdfFormPreview({
   const resolvedMemo = applyEditorDraft(memoJson, editorDraft);
   const viewModel = createPdfMemoViewModel(resolvedMemo);
 
+  function handlePrintMemo() {
+    const started = openMemoPrintPreview(resolvedMemo);
+
+    if (!started) {
+      window.alert("Print could not be started. Try again or use Download for a PDF.");
+    }
+  }
+
+  function handleDownloadPdf() {
+    const downloaded = downloadMemoPdf(resolvedMemo);
+
+    if (!downloaded) {
+      window.alert("PDF export failed. Check the browser console and try again.");
+    }
+  }
+
   function updateDraft(mutator: (current: EditorDraft) => EditorDraft) {
     setEditorDraft((current) => {
       if (!current) {
@@ -235,7 +253,7 @@ export function PdfFormPreview({
               </p>
             </div>
 
-            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <label className="flex flex-col gap-1 text-sm text-slate-600">
                 <span className="sr-only">View</span>
                 <select
@@ -249,6 +267,23 @@ export function PdfFormPreview({
                   <option value="json">JSON</option>
                 </select>
               </label>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handlePrintMemo}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition hover:bg-slate-50 focus-visible:border-blue-200 focus-visible:ring-4 focus-visible:ring-blue-100"
+                >
+                  Print
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 outline-none transition hover:bg-slate-50 focus-visible:border-blue-200 focus-visible:ring-4 focus-visible:ring-blue-100"
+                >
+                  Download
+                </button>
+              </div>
 
               <StatusBadge
                 label={viewModel.statusLabel}

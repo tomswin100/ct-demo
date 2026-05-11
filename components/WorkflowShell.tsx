@@ -1,8 +1,14 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useMemo, useState } from "react";
-import { createAcquisitionEmailThread } from "../lib/acquisitionEmailThread";
+import { useEffect, useMemo, useState } from "react";
+import { formatEmailThread } from "../lib/acquisitionEmailThread";
+import {
+  createInstalledEmailThread,
+  DEFAULT_INSTALLED_EMAIL_THREAD_ID,
+  getInstalledEmailThreadOptions,
+} from "../lib/installedEmailThread";
+import { createMemoJson } from "../lib/memoSchema";
 import type { EmailThread, ExtractedWorkflowData, MemoJson } from "../lib/workflowTypes";
 import { ExtractionPanel } from "./ExtractionPanel";
 import { PdfFormPreview } from "./PdfFormPreview";
@@ -42,8 +48,10 @@ const visibleSteps: Array<{
   },
 ];
 
-function createFreshThread() {
-  const nextThread = createAcquisitionEmailThread();
+const installedThreadOptions = getInstalledEmailThreadOptions();
+
+function createFreshThread(threadId: string) {
+  const nextThread = createInstalledEmailThread(threadId);
 
   return {
     thread: nextThread,
@@ -52,16 +60,32 @@ function createFreshThread() {
 }
 
 export function WorkflowShell() {
-  const initialThread = createFreshThread();
-  const [emailThread] = useState<EmailThread | null>(
-    initialThread.thread,
+  const [emailThread, setEmailThread] = useState<EmailThread | null>(null);
+  const [selectedEmailId, setSelectedEmailId] = useState<string | null>(null);
+  const [selectedThreadId, setSelectedThreadId] = useState(
+    DEFAULT_INSTALLED_EMAIL_THREAD_ID,
   );
-  const [selectedEmailId, setSelectedEmailId] = useState<string | null>(
-    initialThread.selectedEmailId,
-  );
-  const [extractedData] = useState<ExtractedWorkflowData | null>(null);
-  const [memoJson] = useState<MemoJson | null>(null);
+  const [extractedData, setExtractedData] =
+    useState<ExtractedWorkflowData | null>(null);
+  const [memoJson, setMemoJson] = useState<MemoJson | null>(null);
   const [reviewTab, setReviewTab] = useState<ReviewTab>("document");
+  const [extractionPending, setExtractionPending] = useState(false);
+  const [extractionError, setExtractionError] = useState<string | null>(null);
+  const [memoStructureError, setMemoStructureError] = useState<string | null>(
+    null,
+  );
+
+  useEffect(() => {
+    handleLoadInstalledThread(DEFAULT_INSTALLED_EMAIL_THREAD_ID);
+  }, []);
+
+  const selectedThreadOption = useMemo(
+    () =>
+      installedThreadOptions.find((option) => option.id === selectedThreadId) ??
+      installedThreadOptions[0] ??
+      null,
+    [selectedThreadId],
+  );
 
   const selectedEmail = useMemo(() => {
     if (!emailThread) {
@@ -97,11 +121,11 @@ export function WorkflowShell() {
   > = {
     thread: {
       available: true,
-      complete: Boolean(emailThread),
+      complete: Boolean(extractedData),
     },
     extraction: {
       available: Boolean(emailThread),
-      complete: Boolean(extractedData),
+      complete: Boolean(memoJson),
     },
     final: {
       available: Boolean(memoJson),
@@ -113,12 +137,87 @@ export function WorkflowShell() {
     setReviewTab(tab);
   }
 
+  function handleLoadInstalledThread(threadId: string) {
+    const nextThread = createFreshThread(threadId);
+
+    setSelectedThreadId(threadId);
+    setEmailThread(nextThread.thread);
+    setSelectedEmailId(nextThread.selectedEmailId);
+    setExtractedData(null);
+    setMemoJson(null);
+    setReviewTab("document");
+    setExtractionError(null);
+    setMemoStructureError(null);
+  }
+
+  function handleGenerateThread() {
+    handleLoadInstalledThread(selectedThreadId);
+  }
+
+  async function handleRunExtraction() {
+    if (!emailThread || extractionPending) {
+      return;
+    }
+
+    setExtractionError(null);
+    setExtractionPending(true);
+
+    try {
+      const response = await fetch("/api/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          threadText: formatEmailThread(emailThread),
+        }),
+      });
+
+      const payload: unknown = await response.json();
+
+      if (!response.ok) {
+        const message =
+          typeof payload === "object" &&
+          payload !== null &&
+          "error" in payload &&
+          typeof (payload as { error: unknown }).error === "string"
+            ? (payload as { error: string }).error
+            : "Extraction failed.";
+        throw new Error(message);
+      }
+
+      setExtractedData(payload as ExtractedWorkflowData);
+    } catch (error) {
+      setExtractionError(
+        error instanceof Error ? error.message : "Extraction failed.",
+      );
+    } finally {
+      setExtractionPending(false);
+    }
+  }
+
+  function handleStructureMemo() {
+    if (!extractedData) {
+      return;
+    }
+
+    setMemoStructureError(null);
+
+    try {
+      setMemoJson(createMemoJson(extractedData, emailThread ?? undefined));
+    } catch (error) {
+      setMemoStructureError(
+        error instanceof Error
+          ? error.message
+          : "Could not structure memo from extraction.",
+      );
+    }
+  }
+
   function renderEmailThread() {
     if (!emailThread || !selectedEmail) {
       return (
         <EmptyState
           title="No email thread"
-          body="Load the fictional correspondence to begin."
+          body="Loading the installed test email thread..."
         />
       );
     }
@@ -240,7 +339,7 @@ export function WorkflowShell() {
                 Email Thread to File Note
               </h1>
               <p className={`mt-3 text-stone-600 ${isExtractionStage ? "text-sm leading-6 sm:text-base" : "text-base leading-8 sm:text-lg"}`}>
-                Review a fictional acquisition thread, extract the key points, and export a partner-facing file note as PDF.
+                Review the installed test thread, extract the key points, and export a partner-facing file note as PDF.
               </p>
             </div>
 
@@ -287,7 +386,7 @@ export function WorkflowShell() {
         <section className={`rounded-[28px] border border-stone-200 bg-[rgb(var(--workflow-card))] shadow-[0_18px_45px_-34px_rgba(26,24,22,0.22)] ${isExtractionStage ? "p-3 sm:p-4" : "p-4 sm:p-5"}`}>
           <div className="space-y-4">
             <p className={`text-stone-600 ${isExtractionStage ? "text-sm leading-6" : "text-sm leading-7"}`}>
-              Read the thread, extract the working points, then edit, inspect, and export the final document from one page.
+              Switch between installed threads, extract the working points, then edit, inspect, and export the final document from one page.
             </p>
 
             <div className={`flex items-center gap-2 rounded-[22px] border border-stone-200 bg-stone-50/80 ${isExtractionStage ? "p-3" : "p-4"}`}>
@@ -296,6 +395,95 @@ export function WorkflowShell() {
                 The extraction step uses structured model output to keep the JSON consistent.
               </p>
             </div>
+
+            {emailThread ? (
+              <div className="flex flex-col gap-3 border-t border-stone-200 pt-4">
+                <label className="grid gap-2 sm:max-w-md">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                    Example threads
+                  </span>
+                  <select
+                    value={selectedThreadId}
+                    onChange={(event) =>
+                      handleLoadInstalledThread(event.target.value)
+                    }
+                    disabled={extractionPending}
+                    className="w-full rounded-[18px] border border-stone-200 bg-white px-3 py-2.5 text-sm text-stone-900 outline-none focus:border-[rgb(var(--workflow-accent))] focus:ring-2 focus:ring-[rgb(var(--workflow-accent))]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {installedThreadOptions.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {selectedThreadOption ? (
+                  <p className="text-sm leading-6 text-stone-600">
+                    Selected matter: {selectedThreadOption.matterName}
+                  </p>
+                ) : null}
+                {visibleStage === "thread" && extractionError ? (
+                  <p className="text-sm leading-6 text-red-700">
+                    {extractionError}
+                  </p>
+                ) : null}
+                {visibleStage === "extraction" && memoStructureError ? (
+                  <p className="text-sm leading-6 text-red-700">
+                    {memoStructureError}
+                  </p>
+                ) : null}
+                <div className="flex flex-wrap items-center gap-3">
+                  {visibleStage === "thread" ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleRunExtraction}
+                        disabled={extractionPending}
+                        className="rounded-[18px] bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(31,78,121,0.75)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {extractionPending
+                          ? "Running extraction…"
+                          : "Run extraction"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleGenerateThread}
+                        disabled={extractionPending}
+                        className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        Reload selected thread
+                      </button>
+                    </>
+                  ) : visibleStage === "extraction" ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleStructureMemo}
+                        disabled={!extractedData}
+                        className="rounded-[18px] bg-[rgb(var(--workflow-accent))] px-5 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_-16px_rgba(31,78,121,0.75)] transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        Structure memo
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleGenerateThread}
+                        className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
+                      >
+                        Start over with selected thread
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleGenerateThread}
+                      className="rounded-[18px] border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--workflow-accent))]"
+                    >
+                      Reload selected thread
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
 

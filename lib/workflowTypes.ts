@@ -5,10 +5,18 @@ export type WorkflowStage =
   | "memo-preview"
   | "pdf-form";
 
+export type TransactionType = "acquisition" | "merger";
+
 export type EmailThread = {
   matterName: string;
   subject: string;
   rawText: string;
+  matterCategory?: "transaction" | "general";
+  transactionType?: TransactionType;
+  clientName?: string;
+  counterpartyName?: string;
+  fileNumber?: string;
+  memoDate?: string;
   emails: Array<{
     id: string;
     from: string;
